@@ -12,7 +12,8 @@
     "review-data": "node scripts/review-data.ts",
     "test": "vitest run",
     "mcp:build": "node scripts/build-mcp-db.ts",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "layouts": "node scripts/build-layouts.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "1.14.0",

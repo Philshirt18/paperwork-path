@@ -16,6 +16,14 @@ export type MapLayout = { width: number; height: number; stations: Record<string
 
 export const edgeKey = (from: string, to: string) => `${from}>${to}`;
 
+/** Which stations and lines exist. The layout depends on nothing else (not on progress). */
+export const shapeKey = (view: MapView) =>
+  JSON.stringify([
+    view.stations.map((s) => s.id),
+    view.lines.map((l) => edgeKey(l.from, l.to)),
+    view.wayOutLinks.map((w) => edgeKey(w.from, w.to)),
+  ]);
+
 // ELK is large, so it loads only when the map is first drawn.
 let elkPromise: Promise<{ layout: (g: ElkNode) => Promise<ElkNode> }> | null = null;
 const getElk = () =>

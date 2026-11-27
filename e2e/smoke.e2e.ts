@@ -4,8 +4,8 @@
 import { expect, test, type Page } from "@playwright/test";
 
 const escape = (x: string) => x.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-/** A station on the map; its accessible name starts with the step's full name. */
-const station = (page: Page, name: string) => page.getByRole("button", { name: new RegExp(`^${escape(name)} \\(`) });
+/** A station on the map; its accessible name starts with the short name printed on it. */
+const station = (page: Page, shortName: string) => page.getByRole("button", { name: new RegExp(`^${escape(shortName)}[:( ]`) });
 const CERT = "EU citizen registration certificate (includes your NIE)";
 
 /** The page must never be wider than the screen (no zoom-out, no sideways scroll). */
@@ -45,7 +45,7 @@ test("demo: tour, circle, what if, why can't I, way out", async ({ page, isMobil
   await page.getByRole("tab", { name: "What if…" }).click();
   if (isMobile) await page.getByRole("button", { name: "List", exact: true }).click();
   if (isMobile) await page.getByRole("button", { name: `Suppose this falls through: ${CERT}` }).click();
-  else await station(page, CERT).click();
+  else await station(page, "EU registration certificate").click();
   await expect(page.getByText("If this falls through")).toBeVisible();
   await expect(page.getByRole("heading", { name: CERT })).toBeVisible();
 

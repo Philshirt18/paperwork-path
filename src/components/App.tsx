@@ -5,7 +5,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useGraph } from "@/lib/useGraph";
 import { doThisNow, findCircles, getStep, listProfiles, mapView, whatIf, whyCant } from "@/graph/queries.ts";
-import { edgeKey, layoutMap, type MapLayout } from "@/lib/layout";
+import { edgeKey, shapeKey, type MapLayout } from "@/lib/layout";
+import { getLayout } from "@/lib/prelaid";
 import { MetroMap, type Highlight } from "./MetroMap";
 import { Header } from "./Header";
 import { Sidebar } from "./Sidebar";
@@ -48,18 +49,18 @@ export function App() {
   const stepAnswer = useMemo(() => (ready && selected ? getStep(ready.graph, selected) : null), [ready, selected]);
 
   // Layout only depends on which stations and lines exist, not on their status.
-  const shapeKey = view ? JSON.stringify([view.data.stations.map((x) => x.id), view.data.lines.map((l) => edgeKey(l.from, l.to))]) : "";
+  const shape = view ? shapeKey(view.data) : "";
   useEffect(() => {
     if (!view) return;
     let live = true;
-    layoutMap(view.data)
+    getLayout(view.data)
       .then((l) => live && (setLayout(l), setLayoutError(null)))
       .catch((e) => live && setLayoutError(String(e)));
     return () => {
       live = false;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shapeKey]);
+  }, [shape]);
 
   // Profile switch or goal change can make a remembered choice disappear.
   useEffect(() => {

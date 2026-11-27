@@ -19,6 +19,7 @@ const db = new RelateDb();
 const q = (query: string, params: Record<string, unknown> = {}) => {
   const env = JSON.parse(db.execute(query, JSON.stringify(params)));
   if (env.error) throw new Error(`${JSON.stringify(env.error)}\n${query}`);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- one-off report script reading many ad-hoc columns
   return env.rows as Record<string, any>[];
 };
 for (const s of seedStatements()) q(s.query, s.params);

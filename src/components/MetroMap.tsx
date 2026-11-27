@@ -128,7 +128,8 @@ function Station({ s, x, y, line, selected, opacity, hl, onSelect }: {
     isFocus && hl?.tone === "whatif" ? "var(--color-terracotta)" :
     s.status === "done" ? "var(--color-olive)" :
     s.status === "blocked" || s.status === "not_needed" ? "#9a9da3" : "var(--color-ink)";
-  const label = `${s.name} (${s.nameEs}), ${STATUS_LABEL[s.status]}${s.isGoal ? ", goal" : ""}${s.isWayOut ? ", way out" : ""}${s.verified ? "" : ", not yet verified"}`;
+  // Starts with the words printed on the map, so voice control users can say what they see.
+  const label = `${s.shortName}${s.shortName === s.name ? "" : `: ${s.name}`} (${s.nameEs}), ${STATUS_LABEL[s.status]}${s.isGoal ? ", goal" : ""}${s.isWayOut ? ", way out" : ""}${s.verified ? "" : ", not yet verified"}`;
 
   return (
     <g
@@ -172,7 +173,7 @@ function Station({ s, x, y, line, selected, opacity, hl, onSelect }: {
       )}
 
       {s.status === "done" && (
-        <g transform="translate(36,-15)"><g className="stamp">
+        <g transform="translate(36,-15)" aria-hidden="true"><g className="stamp">
           <rect x={-27} y={-8} width={54} height={16} rx={2} fill="var(--color-paper)" stroke="var(--color-olive)" strokeWidth={1.5} />
           <text textAnchor="middle" y={4} fontSize={9.5} fontWeight={700} letterSpacing="0.14em" fill="var(--color-olive)"
             style={{ fontFamily: "var(--font-sans)" }}>SELLADO</text>
@@ -184,11 +185,11 @@ function Station({ s, x, y, line, selected, opacity, hl, onSelect }: {
 
       <text textAnchor="middle" y={32} fontSize={12.5} fontWeight={600} fill="var(--color-ink)" style={{ fontFamily: "var(--font-sans)" }}>
         {lines.map((t, i) => (
-          <tspan key={i} x={0} dy={i === 0 ? 0 : 15}>{t}</tspan>
+          <tspan key={i} x={0} dy={i === 0 ? 0 : 15}>{i > 0 ? " " : ""}{t}</tspan>
         ))}
-        {!s.verified && <tspan fill="var(--color-terracotta)" fontSize={11} dx={3}> ?</tspan>}
+        {!s.verified && <tspan aria-hidden="true" fill="var(--color-terracotta)" fontSize={11} dx={3}> ?</tspan>}
       </text>
-      <text textAnchor="middle" y={32 + lines.length * 15} fontSize={10.5} fill="var(--color-muted)"
+      <text aria-hidden="true" textAnchor="middle" y={32 + lines.length * 15} fontSize={10.5} fill="var(--color-muted)"
         className="small-caps" style={{ fontFamily: "var(--font-sans)" }}>
         {truncate(s.nameEs, 28)}
       </text>

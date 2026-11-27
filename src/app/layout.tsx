@@ -15,6 +15,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${serif.variable} ${sans.variable} ${mono.variable}`}>
+      <head>
+        {/* The graph engine is the largest download: start it before the page script asks for it. */}
+        <link rel="preload" href="/relate/relate_bg.wasm" as="fetch" type="application/wasm" crossOrigin="anonymous" />
+      </head>
       <body>{children}</body>
     </html>
   );

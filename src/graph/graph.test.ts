@@ -4,7 +4,8 @@ import { beforeAll, beforeEach, describe, expect, it } from "vitest";
 import { initSync, RelateDb } from "@relate/relate-wasm";
 import { Graph, GraphError } from "./db.ts";
 import { validateData } from "./seed.ts";
-import { doThisNow, findCircles, getStep, listProfiles, whatIf, whyCant } from "./queries.ts";
+import { doThisNow, findCircles, getStep, listProfiles, mapView, whatIf, whyCant } from "./queries.ts";
+import { hasPrelaidLayout } from "../lib/prelaid.ts";
 import { createUser, exportPlan, importPlan, loadDemoUser, markDone, completedSteps } from "./plan.ts";
 
 const require = createRequire(import.meta.url);
@@ -214,7 +215,7 @@ describe("plan file", () => {
 
 describe("map view", () => {
   it("Lena's map: statuses, goals and lines for her profile only", async () => {
-    const { mapView } = await import("./queries.ts");
+    
     loadDemoUser(graph);
     const m = mapView(graph, "lena").data;
     const status = Object.fromEntries(m.stations.map((s) => [s.id, s.status]));
@@ -228,9 +229,18 @@ describe("map view", () => {
     expect(m.wayOutLinks).toEqual([{ from: "nie_number", to: "eu_certificate" }]);
   });
   it("a way out becomes 'not needed' once the certificate is done", async () => {
-    const { mapView } = await import("./queries.ts");
+    
     loadDemoUser(graph);
     markDone(graph, "lena", "eu_certificate");
     expect(mapView(graph, "lena").data.stations.find((s) => s.id === "nie_number")!.status).toBe("not_needed");
+  });
+});
+
+describe("precomputed map layouts", () => {
+  it("exist for every profile (run `npm run layouts` after changing the data)", () => {
+    for (const p of listProfiles(graph).data) {
+      createUser(graph, { id: `t_${p.id}`, profile: p.id });
+      expect(hasPrelaidLayout(mapView(graph, `t_${p.id}`).data), p.id).toBe(true);
+    }
   });
 });
