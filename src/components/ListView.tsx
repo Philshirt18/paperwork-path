@@ -4,6 +4,7 @@
 import type { Circle, MapView } from "@/graph/queries.ts";
 import type { Highlight } from "./MetroMap";
 import type { Mode } from "./ModeBar";
+import type { MapLayout } from "@/lib/layout";
 
 const STATUS: Record<string, { label: string; cls: string }> = {
   done: { label: "Done", cls: "bg-olive-soft text-olive" },
@@ -12,10 +13,17 @@ const STATUS: Record<string, { label: string; cls: string }> = {
   not_needed: { label: "Not needed", cls: "bg-paper-deep text-muted" },
 };
 
-export function ListView({ view, circles, highlight, onSelect, mode }: {
+export function ListView({ view, circles, highlight, onSelect, mode, layout }: {
   view: MapView; circles: Circle[]; highlight: Highlight | null; onSelect: (id: string) => void; mode: Mode;
+  layout: MapLayout | null;
 }) {
-  const order = topoOrder(view);
+  // Same order as the map (left to right, top to bottom); without a map, a simple dependency order.
+  const order = layout
+    ? [...view.stations.map((s) => s.id)].sort((a, b) => {
+        const pa = layout.stations[a], pb = layout.stations[b];
+        return pa && pb ? pa.x - pb.x || pa.y - pb.y : 0;
+      })
+    : topoOrder(view);
   const needs = (id: string) => view.lines.filter((l) => l.from === id);
   const inCircle = new Set(circles.flatMap((c) => c.stations.map((s) => s.id)));
   const action = mode === "whatif" ? "Suppose this falls through" : mode === "why" ? "Why can't I get this" : "Details";

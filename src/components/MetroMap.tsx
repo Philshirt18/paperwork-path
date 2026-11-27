@@ -89,8 +89,13 @@ function MetroMapInner({ view, layout, circleEdges, highlight, selected, onSelec
         </g>
       )}
 
-      {/* Stations */}
-      {view.stations.map((s) => {
+      {/* Stations, in reading order (left to right) so Tab follows the map */}
+      {[...view.stations]
+        .sort((a, b) => {
+          const pa = layout.stations[a.id], pb = layout.stations[b.id];
+          return pa && pb ? pa.x - pb.x || pa.y - pb.y : 0;
+        })
+        .map((s) => {
         const p = layout.stations[s.id];
         if (!p) return null;
         const on = !highlight || highlight.stations.has(s.id) || highlight.focus === s.id || Boolean(highlight.wayOuts?.has(s.id));

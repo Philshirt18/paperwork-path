@@ -2,7 +2,6 @@
 // time runs left to right (a requirement sits left of the step that needs it),
 // lines are routed orthogonally. ELK breaks cycles to lay them out, but keeps
 // every edge, so the circles stay on the map; we draw them on top in terracotta.
-import ELK from "elkjs/lib/elk.bundled.js";
 import type { ElkNode, ElkExtendedEdge } from "elkjs/lib/elk-api";
 import type { MapView } from "@/graph/queries.ts";
 
@@ -17,7 +16,10 @@ export type MapLayout = { width: number; height: number; stations: Record<string
 
 export const edgeKey = (from: string, to: string) => `${from}>${to}`;
 
-const elk = new ELK();
+// ELK is large, so it loads only when the map is first drawn.
+let elkPromise: Promise<{ layout: (g: ElkNode) => Promise<ElkNode> }> | null = null;
+const getElk = () =>
+  (elkPromise ??= import("elkjs/lib/elk.bundled.js").then(({ default: ELK }) => new ELK()));
 
 export async function layoutMap(view: MapView): Promise<MapLayout> {
   const children: ElkNode[] = view.stations.map((s) => ({
@@ -44,6 +46,7 @@ export async function layoutMap(view: MapView): Promise<MapLayout> {
     })),
   ];
 
+  const elk = await getElk();
   const result: ElkNode = await elk.layout({
     id: "root",
     layoutOptions: {

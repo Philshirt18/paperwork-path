@@ -26,7 +26,7 @@ export function Drawer(p: Props) {
     <aside
       aria-label="Details"
       aria-live="polite"
-      className="rounded-lg border border-rule bg-card lg:col-span-2 xl:sticky xl:top-4 xl:col-span-1 xl:max-h-[calc(100dvh-2rem)] xl:self-start xl:overflow-y-auto"
+      className="rounded-lg border border-rule bg-card xl:sticky xl:top-4 xl:max-h-[calc(100dvh-2rem)] xl:overflow-y-auto"
       data-tour="drawer"
     >
       <div className="p-5">

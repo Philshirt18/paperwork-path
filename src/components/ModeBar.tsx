@@ -28,7 +28,7 @@ export function ModeBar(p: Props) {
   return (
     <div className="space-y-3">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div role="tablist" aria-label="Question" className="inline-flex rounded-full border border-rule bg-card p-1" data-tour="modes">
+        <div role="tablist" aria-label="Question" className="inline-flex max-w-full overflow-x-auto rounded-full border border-rule bg-card p-1" data-tour="modes">
           {TABS.map((t) => (
             <button
               key={t.id}
@@ -36,7 +36,7 @@ export function ModeBar(p: Props) {
               aria-selected={p.mode === t.id}
               onClick={() => p.onMode(t.id)}
               data-tour={`tab-${t.id}`}
-              className={`rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors sm:px-4 ${
+              className={`whitespace-nowrap rounded-full px-3 py-1.5 text-sm font-medium transition-colors sm:px-4 ${
                 p.mode === t.id ? "bg-ink text-paper" : "text-ink-soft hover:text-ink"
               }`}
             >

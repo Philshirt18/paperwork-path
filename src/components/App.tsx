@@ -2,7 +2,7 @@
 // The whole app on one page: left = who you are + "Do this now",
 // centre = the metro map (or list), right = details and "How we know".
 // Every answer comes from a Cypher query over the Relate graph in this tab.
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useGraph } from "@/lib/useGraph";
 import { doThisNow, findCircles, getStep, listProfiles, mapView, whatIf, whyCant } from "@/graph/queries.ts";
 import { edgeKey, layoutMap, type MapLayout } from "@/lib/layout";
@@ -27,6 +27,7 @@ export function App() {
   const [layout, setLayout] = useState<MapLayout | null>(null);
   const [layoutError, setLayoutError] = useState<string | null>(null);
   const [tourOn, setTourOn] = useState(false);
+  const drawerRef = useRef<HTMLDivElement>(null);
 
   // ---- Answers from the graph (recomputed whenever the plan changes) ----
   const ready = s.status === "ready" ? s : null;
@@ -122,14 +123,21 @@ export function App() {
   }, [mode, circles, circleIndex, whatIfAnswer, whatIfStep, whyAnswer, whyGoal, ready?.version]);
 
   // ---- Interaction ----
+  // On narrow screens the details sit below the map: bring them into view.
+  const revealDetails = () => {
+    if (window.innerWidth < 1280 && !tourOn)
+      requestAnimationFrame(() => drawerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }));
+  };
   const onStation = useCallback(
     (id: string) => {
+      revealDetails();
       if (mode === "whatif") setWhatIfStep((cur) => (cur === id ? null : id));
       else if (mode === "why") setWhyGoal(id);
       else setSelected(id);
       if (mode !== "map") setSelected(null);
     },
-    [mode],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [mode, tourOn],
   );
 
   const changeMode = (m: Mode) => {
@@ -185,12 +193,19 @@ export function App() {
         profiles={profiles}
         onStartFresh={(p) => {
           api.startFresh(p);
+          setSelected(null);
           setMode("map");
           setWhatIfStep(null);
           setWhyGoal(null);
         }}
-        onShowDemo={api.showDemo}
-        onBackToMine={api.backToMine}
+        onShowDemo={() => {
+          api.showDemo();
+          setSelected(null);
+        }}
+        onBackToMine={() => {
+          api.backToMine();
+          setSelected(null);
+        }}
         exportFile={api.exportFile}
         importFile={api.importFile}
         onTour={() => setTourOn(true)}
@@ -233,7 +248,7 @@ export function App() {
           />
           <div className="relative mt-3 overflow-hidden rounded-lg border border-rule bg-card/70" data-tour="map">
             {display === "list" ? (
-              <ListView view={view.data} circles={circles.data} highlight={highlight} onSelect={onStation} mode={mode} />
+              <ListView view={view.data} circles={circles.data} highlight={highlight} onSelect={onStation} mode={mode} layout={layout} />
             ) : layoutError ? (
               <div className="p-8 text-sm">
                 <p className="font-semibold">The map could not be drawn.</p>
@@ -261,6 +276,7 @@ export function App() {
           <Legend profile={view.data.profile} />
         </section>
 
+        <div ref={drawerRef} className="scroll-mt-4 lg:col-span-2 xl:col-span-1">
         <Drawer
           mode={mode}
           step={stepAnswer}
@@ -280,6 +296,7 @@ export function App() {
           }}
           names={Object.fromEntries(view.data.stations.map((x) => [x.id, x.shortName]))}
         />
+        </div>
       </div>
 
       {tourOn && <Tour onGo={tourGo} onEnd={endTour} />}
