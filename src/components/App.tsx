@@ -242,7 +242,7 @@ export function App() {
         onTour={() => setTourOn(true)}
       />
 
-      <div className="mx-auto grid max-w-[1680px] gap-6 px-4 pb-16 sm:px-6 lg:grid-cols-[280px_minmax(0,1fr)] xl:grid-cols-[280px_minmax(0,1fr)_360px]">
+      <div className="mx-auto grid max-w-[1680px] grid-cols-[minmax(0,1fr)] gap-6 px-4 pb-16 sm:px-6 lg:grid-cols-[280px_minmax(0,1fr)] xl:grid-cols-[280px_minmax(0,1fr)_360px]">
         <Sidebar
           isDemo={s.isDemo}
           userId={s.userId}

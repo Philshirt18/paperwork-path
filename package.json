@@ -11,7 +11,8 @@
     "postinstall": "node -e \"require('fs').mkdirSync('public/relate',{recursive:true});require('fs').copyFileSync(require.resolve('@relate/relate-wasm/relate_bg.wasm'),'public/relate/relate_bg.wasm')\"",
     "review-data": "node scripts/review-data.ts",
     "test": "vitest run",
-    "mcp:build": "node scripts/build-mcp-db.ts"
+    "mcp:build": "node scripts/build-mcp-db.ts",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "1.14.0",
@@ -24,6 +25,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@playwright/test": "1.65.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

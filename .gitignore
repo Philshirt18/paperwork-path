@@ -46,3 +46,7 @@ next-env.d.ts
 
 # Relate database files built locally
 *.rl
+
+# playwright
+/test-results/
+/playwright-report/
