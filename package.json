@@ -9,7 +9,8 @@
     "lint": "eslint",
     "spike": "node scripts/spike-node.ts",
     "postinstall": "node -e \"require('fs').mkdirSync('public/relate',{recursive:true});require('fs').copyFileSync(require.resolve('@relate/relate-wasm/relate_bg.wasm'),'public/relate/relate_bg.wasm')\"",
-    "review-data": "node scripts/review-data.ts"
+    "review-data": "node scripts/review-data.ts",
+    "test": "vitest run"
   },
   "dependencies": {
     "@relate/relate": "1.3.0",
@@ -27,6 +28,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.5.29",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "3.2.4"
   }
 }

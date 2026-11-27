@@ -17,6 +17,20 @@ export default function SpikePage() {
         await relate.default({ module_or_path: "/relate/relate_bg.wasm" });
         const { runSpike } = await import("@/spike/run.ts");
         const out = runSpike(() => new relate.RelateDb());
+        // Phase 2 check: the real seed and queries, in the browser.
+        const { Graph } = await import("@/graph/db.ts");
+        const q = await import("@/graph/queries.ts");
+        const { loadDemoUser } = await import("@/graph/plan.ts");
+        const g = new Graph(new relate.RelateDb());
+        g.loadSeed();
+        loadDemoUser(g);
+        const now = q.doThisNow(g, "lena").data.map((s) => s.id).join(",");
+        const circles = q.findCircles(g, "lena").data.length;
+        out.push({
+          name: "Real seed + queries: Lena's 'Do this now' and circles",
+          ok: now === "nie_number" && circles === 2,
+          detail: `doThisNow=${now}; circles=${circles}`,
+        });
         setMs(Math.round(performance.now() - t0));
         setResults(out);
         (window as unknown as { __spike: Outcome[] }).__spike = out;
