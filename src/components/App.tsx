@@ -14,6 +14,8 @@ import { ListView } from "./ListView";
 import { ModeBar, type Mode } from "./ModeBar";
 import { Tour, type TourTarget } from "./Tour";
 import { Legend } from "./Legend";
+import { AgentPanel } from "./AgentPanel";
+import type { ToolRun } from "@/agent/tools.ts";
 
 export function App() {
   const api = useGraph();
@@ -166,7 +168,36 @@ export function App() {
       setSelected(null);
       setWhyGoal("reta");
     }
-    if (t === "now") changeMode("map");
+    if (t === "agent") {
+      changeMode("map");
+      requestAnimationFrame(() => document.querySelector('[data-tour="agent"]')?.scrollIntoView({ behavior: "smooth", block: "center" }));
+    }
+    if (t === "now") {
+      changeMode("map");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
+  // "Show on map" from the assistant: open the same question in the map.
+  const showToolRun = (r: ToolRun) => {
+    setDisplay("map");
+    const id = r.input.stepId;
+    if (r.name === "whatIf" && id) {
+      setMode("whatif");
+      setSelected(null);
+      setWhatIfStep(id);
+    } else if (r.name === "whyCant" && id) {
+      setMode("why");
+      setSelected(null);
+      setWhyGoal(id);
+    } else if (r.name === "findCircles") {
+      changeMode("circles");
+      setCircleIndex(0);
+    } else {
+      changeMode("map");
+      if (r.name === "getStep" && id) setSelected(id);
+    }
+    requestAnimationFrame(() => document.querySelector('[data-tour="modes"]')?.scrollIntoView({ behavior: "smooth", block: "start" }));
   };
 
   const endTour = () => {
@@ -274,6 +305,14 @@ export function App() {
             )}
           </div>
           <Legend profile={view.data.profile} />
+          <AgentPanel
+            graph={s.graph}
+            userId={s.userId}
+            profile={view.data.profile}
+            who={s.isDemo ? "Lena" : "you"}
+            names={Object.fromEntries(view.data.stations.map((x) => [x.id, x.shortName]))}
+            onShow={showToolRun}
+          />
         </section>
 
         <div ref={drawerRef} className="scroll-mt-4 lg:col-span-2 xl:col-span-1">

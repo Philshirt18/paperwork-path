@@ -356,7 +356,7 @@ export function HowWeKnow({ explain, lead }: { explain: Explain; lead: string })
   );
 }
 
-function SourceLink({ url, title }: { url: string; title: string | null }) {
+export function SourceLink({ url, title }: { url: string; title: string | null }) {
   return (
     <a href={url} target="_blank" rel="noreferrer" className="text-ink underline decoration-rule underline-offset-2 hover:decoration-ink">
       {title ?? url}

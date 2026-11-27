@@ -3,7 +3,7 @@
 // stations) instead of showing screenshots, so every step is a live query.
 import { useEffect, useRef, useState } from "react";
 
-export type TourTarget = "circle" | "whatif" | "why" | "now";
+export type TourTarget = "circle" | "whatif" | "why" | "agent" | "now";
 
 const STEPS: { target: TourTarget; title: string; body: string }[] = [
   {
@@ -20,6 +20,11 @@ const STEPS: { target: TourTarget; title: string; body: string }[] = [
     target: "why",
     title: "Why can't she register as self-employed?",
     body: "The shortest chain of missing requirements, from the goal down to what she lacks. Here nothing can start, so the answer points back to the circle.",
+  },
+  {
+    target: "agent",
+    title: "Or just ask.",
+    body: "A small Claude model can only pick from six fixed graph tools. They run here, on your own plan, and every call is listed with its path and sources. If the graph has no answer, it says so. Switch on Compare to see the same model without the graph.",
   },
   {
     target: "now",
