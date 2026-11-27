@@ -12,14 +12,21 @@ export type RelateLike = {
 export type Row = Record<string, unknown>;
 
 export class GraphError extends Error {
-  constructor(message: string, readonly query: string, readonly detail: unknown) {
+  readonly query: string;
+  readonly detail: unknown;
+  constructor(message: string, query: string, detail: unknown) {
     super(message);
+    this.query = query;
+    this.detail = detail;
     this.name = "GraphError";
   }
 }
 
 export class Graph {
-  constructor(readonly relate: RelateLike) {}
+  readonly relate: RelateLike;
+  constructor(relate: RelateLike) {
+    this.relate = relate;
+  }
 
   run<T extends Row = Row>(query: string, params: Row = {}): T[] {
     const envelope = JSON.parse(this.relate.execute(query, JSON.stringify(params)));

@@ -10,7 +10,8 @@
     "spike": "node scripts/spike-node.ts",
     "postinstall": "node -e \"require('fs').mkdirSync('public/relate',{recursive:true});require('fs').copyFileSync(require.resolve('@relate/relate-wasm/relate_bg.wasm'),'public/relate/relate_bg.wasm')\"",
     "review-data": "node scripts/review-data.ts",
-    "test": "vitest run"
+    "test": "vitest run",
+    "mcp:build": "node scripts/build-mcp-db.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "1.14.0",
