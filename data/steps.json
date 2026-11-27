@@ -2,15 +2,19 @@
   {
     "id": "id_document",
     "name": "Valid passport or national ID card",
+    "shortName": "Passport or ID card",
     "nameEs": "Pasaporte o documento nacional de identidad",
     "office": "Your home country",
-    "whatToBring": ["A passport or national ID card that is valid and in force"],
+    "whatToBring": [
+      "A passport or national ID card that is valid and in force"
+    ],
     "source": "policia_ex18",
     "verified": true
   },
   {
     "id": "job_offer",
     "name": "Employer's hiring declaration or employment certificate",
+    "shortName": "Job declaration",
     "nameEs": "Declaración de contratación o certificado de empleo",
     "office": "Your employer",
     "whatToBring": [
@@ -23,6 +27,7 @@
   {
     "id": "health_insurance",
     "name": "Health insurance that covers you in Spain",
+    "shortName": "Health insurance",
     "nameEs": "Seguro de enfermedad",
     "office": "An insurer, or your pension country",
     "whatToBring": [
@@ -35,6 +40,7 @@
   {
     "id": "proof_of_funds",
     "name": "Proof of sufficient resources",
+    "shortName": "Proof of funds",
     "nameEs": "Acreditación de recursos suficientes",
     "office": "Your bank or asset records",
     "whatToBring": [
@@ -47,9 +53,12 @@
   {
     "id": "cita_extranjeria",
     "name": "Appointment at the foreigners' office",
+    "shortName": "Extranjería appointment",
     "nameEs": "Cita previa de extranjería",
     "office": "Online booking (Cita previa de extranjería)",
-    "whatToBring": ["The appointment must be requested by the foreign citizen or an authorised representative"],
+    "whatToBring": [
+      "The appointment must be requested by the foreign citizen or an authorised representative"
+    ],
     "source": "cita_extranjeria",
     "verified": false,
     "unverifiedReason": "The booking app (icp.administracionelectronica.gob.es) could not be read, so it is not confirmed which procedure to pick for Málaga or whether the appointment is mandatory."
@@ -57,6 +66,7 @@
   {
     "id": "nie_number",
     "name": "NIE number on its own (form EX-15)",
+    "shortName": "NIE number (EX-15)",
     "nameEs": "Asignación de NIE (EX-15)",
     "office": "Oficina de Extranjería or Comisaría de Policía; from abroad: a Spanish consulate",
     "whatToBring": [
@@ -70,6 +80,7 @@
   {
     "id": "eu_certificate",
     "name": "EU citizen registration certificate (includes your NIE)",
+    "shortName": "EU registration certificate",
     "nameEs": "Certificado de registro de ciudadano de la Unión",
     "office": "Oficina de Extranjería of the province, or else the Comisaría de Policía",
     "whatToBring": [
@@ -85,6 +96,7 @@
   {
     "id": "housing",
     "name": "Proof of where you live (e.g. rental contract)",
+    "shortName": "Proof of address",
     "nameEs": "Acreditación del domicilio",
     "office": "Your landlord, owner or utility company",
     "whatToBring": [
@@ -98,6 +110,7 @@
   {
     "id": "padron",
     "name": "Register at the town hall (padrón)",
+    "shortName": "Town hall registration",
     "nameEs": "Empadronamiento",
     "office": "Edificio de Tabacalera or a Junta Municipal de Distrito, Málaga",
     "whatToBring": [
@@ -112,6 +125,7 @@
   {
     "id": "alta_censal",
     "name": "Register with the tax office as self-employed (modelo 036)",
+    "shortName": "Tax registration (036)",
     "nameEs": "Alta censal (modelo 036)",
     "office": "Agencia Tributaria, online (certificate or Cl@ve) or at the office for your tax address",
     "whatToBring": [
@@ -125,6 +139,7 @@
   {
     "id": "nuss",
     "name": "Social Security number",
+    "shortName": "Social Security number",
     "nameEs": "Número de la Seguridad Social (NUSS)",
     "office": "Seguridad Social, online (Import@ss)",
     "whatToBring": [
@@ -138,6 +153,7 @@
   {
     "id": "bank_account",
     "name": "Spanish bank account",
+    "shortName": "Bank account",
     "nameEs": "Cuenta bancaria",
     "office": "A bank of your choice",
     "whatToBring": [],
@@ -148,6 +164,7 @@
   {
     "id": "reta",
     "name": "Register as self-employed with Social Security (RETA)",
+    "shortName": "Self-employed registration",
     "nameEs": "Alta en trabajo autónomo (RETA)",
     "office": "Seguridad Social, online (Import@ss)",
     "whatToBring": [
@@ -163,9 +180,12 @@
   {
     "id": "alta_employee",
     "name": "Your employer registers you with Social Security",
+    "shortName": "Employer registers you",
     "nameEs": "Alta en la Seguridad Social por la empresa",
     "office": "Your employer",
-    "whatToBring": ["Your Social Security number"],
+    "whatToBring": [
+      "Your Social Security number"
+    ],
     "source": "ss_nuss",
     "verified": false,
     "unverifiedReason": "The employer-side Seguridad Social page was not read. The NUSS page only says you need the number to be registered for the first time when you start working."

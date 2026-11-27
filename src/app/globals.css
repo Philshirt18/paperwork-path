@@ -1,26 +1,108 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Paperwork Path — the transit map of Spanish bureaucracy.
+   Warm paper, deep ink, one terracotta accent, muted olive for "done". */
+@theme {
+  --color-paper: #f6f1e7;
+  --color-paper-deep: #ede5d3;
+  --color-card: #fbf8f1;
+  --color-ink: #1b2a41;
+  --color-ink-soft: #4a5568;
+  --color-muted: #5f6673;
+  --color-rule: #d9cfbb;
+  --color-terracotta: #b4492a;
+  --color-terracotta-soft: #f1ddd2;
+  --color-olive: #5e6b2e;
+  --color-olive-soft: #e3e6cf;
+  --color-line-employee: #2b5c8a;
+  --color-line-autonomo: #b07a12;
+  --color-line-own: #2f7a6d;
+
+  --font-serif: var(--font-instrument-serif), Georgia, serif;
+  --font-sans: var(--font-inter-tight), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: var(--color-paper);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Subtle paper grain, drawn once and laid over everything. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0.35;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.55  0 0 0 0 0.48  0 0 0 0 0.36  0 0 0 0.09 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+::selection {
+  background: var(--color-terracotta-soft);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-terracotta);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.small-caps {
+  font-variant: all-small-caps;
+  letter-spacing: 0.06em;
+}
+
+/* Paths that draw themselves in (used for "what if" and circles). */
+@keyframes draw-in {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+.draw-in {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: draw-in 420ms var(--ease-out-soft) forwards;
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+.fade-up { animation: fade-up 300ms var(--ease-out-soft) both; }
+
+@keyframes stamp {
+  0% { opacity: 0; transform: scale(1.6) rotate(-14deg); }
+  100% { opacity: 1; transform: scale(1) rotate(-8deg); }
+}
+.stamp { animation: stamp 260ms var(--ease-out-soft) both; transform-box: fill-box; transform-origin: center; }
+
+@media (prefers-reduced-motion: reduce) {
+  .draw-in { animation: none; stroke-dashoffset: 0; }
+  .fade-up, .stamp { animation: none; }
+}
+
+/* Buttons */
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center gap-2 rounded-full bg-ink px-4 py-2 text-sm font-medium text-paper transition-colors hover:bg-[#2a3d5c];
+  }
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 rounded-full border border-rule px-4 py-2 text-sm font-medium text-ink transition-colors hover:border-ink-soft hover:bg-card;
+  }
+  .btn-small {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-rule px-3 py-1 text-xs font-medium text-ink transition-colors hover:border-ink-soft hover:bg-paper-deep;
+  }
+  .eyebrow {
+    @apply text-[11px] font-semibold uppercase tracking-[0.14em] text-muted;
+  }
 }

@@ -25,12 +25,12 @@ export function seedStatements(): Statement[] {
     },
     {
       query: `UNWIND $rows AS row
-              CREATE (:Step {id: row.id, name: row.name, nameEs: row.nameEs, office: row.office,
+              CREATE (:Step {id: row.id, name: row.name, shortName: row.shortName, nameEs: row.nameEs, office: row.office,
                 whatToBring: row.whatToBring, verified: row.verified, unverifiedReason: row.unverifiedReason,
                 sourceUrl: row.sourceUrl, sourceTitle: row.sourceTitle, lastChecked: row.lastChecked})`,
       params: {
         rows: steps.map((s) => ({
-          id: s.id, name: s.name, nameEs: s.nameEs, office: s.office, whatToBring: s.whatToBring,
+          id: s.id, name: s.name, shortName: s.shortName, nameEs: s.nameEs, office: s.office, whatToBring: s.whatToBring,
           verified: s.verified, unverifiedReason: (s as { unverifiedReason?: string }).unverifiedReason ?? null,
           ...src(s.source),
         })),

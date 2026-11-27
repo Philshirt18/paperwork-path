@@ -51,6 +51,13 @@ describe("circle detector", () => {
     expect(practice[0].links.some((l) => l.basis === "practice")).toBe(true);
   });
 
+  it("marks circles as escaped once a way out is done", () => {
+    loadDemoUser(graph);
+    expect(findCircles(graph, "lena").data.every((c) => !c.escaped)).toBe(true);
+    markDone(graph, "lena", "nie_number");
+    expect(findCircles(graph, "lena").data.every((c) => c.escaped)).toBe(true);
+  });
+
   it("lists each circle once (no duplicates per station, no figure eights)", () => {
     loadDemoUser(graph);
     expect(findCircles(graph, "lena").data).toHaveLength(2);
@@ -139,9 +146,9 @@ describe("why can't I", () => {
     expect(r.done).toBe(false);
     expect(ids(r.missing)).toEqual(["alta_censal", "bank_account", "eu_certificate", "housing", "nuss", "padron"]);
     const cert = r.missing.find((m) => m.id === "eu_certificate")!;
-    // Shortest chain: two hops (via the Social Security number or the bank account).
+    // Shortest official chain (via NUSS or tax registration), never via the bank (common practice).
     expect(cert.chain).toHaveLength(2);
-    expect(cert.chain[0].from).toBe("reta");
+    expect(cert.chain.every((l) => l.basis === "official")).toBe(true);
     expect(cert.chain[1].to).toBe("eu_certificate");
     expect(r.missing.every((m) => !m.open)).toBe(true); // all stuck: that's the circle
   });
@@ -202,5 +209,28 @@ describe("plan file", () => {
     loadDemoUser(graph);
     const bad = exportPlan(graph, "lena").replace('"id_document"', '"made_up"');
     expect(() => importPlan(new Graph(new RelateDb()), bad)).toThrow();
+  });
+});
+
+describe("map view", () => {
+  it("Lena's map: statuses, goals and lines for her profile only", async () => {
+    const { mapView } = await import("./queries.ts");
+    loadDemoUser(graph);
+    const m = mapView(graph, "lena").data;
+    const status = Object.fromEntries(m.stations.map((s) => [s.id, s.status]));
+    expect(status).toMatchObject({
+      id_document: "done", cita_extranjeria: "done", nie_number: "open",
+      eu_certificate: "blocked", alta_censal: "blocked", reta: "blocked",
+    });
+    expect(status.job_offer).toBeUndefined(); // employee-only step not on her map
+    expect(m.stations.filter((s) => s.isGoal).map((s) => s.id).sort()).toEqual(["eu_certificate", "padron", "reta"]);
+    expect(m.lines.some((l) => l.from === "eu_certificate" && l.to === "health_insurance")).toBe(false);
+    expect(m.wayOutLinks).toEqual([{ from: "nie_number", to: "eu_certificate" }]);
+  });
+  it("a way out becomes 'not needed' once the certificate is done", async () => {
+    const { mapView } = await import("./queries.ts");
+    loadDemoUser(graph);
+    markDone(graph, "lena", "eu_certificate");
+    expect(mapView(graph, "lena").data.stations.find((s) => s.id === "nie_number")!.status).toBe("not_needed");
   });
 });

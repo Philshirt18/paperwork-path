@@ -19,6 +19,7 @@ export type Answer<T> = { data: T; explain: Explain };
 export type StepSummary = {
   id: string;
   name: string;
+  shortName: string;
   nameEs: string;
   verified: boolean;
   sourceUrl: string | null;
@@ -54,7 +55,7 @@ WITH u, p, reached, collect(DISTINCT w) AS ways
 WITH u, p, reached + ways AS relevant`;
 
 const STEP_FIELDS = (n: string) =>
-  `${n}.id AS id, ${n}.name AS name, ${n}.nameEs AS nameEs, ${n}.verified AS verified,
+  `${n}.id AS id, ${n}.name AS name, ${n}.shortName AS shortName, ${n}.nameEs AS nameEs, ${n}.verified AS verified,
    ${n}.sourceUrl AS sourceUrl, ${n}.sourceTitle AS sourceTitle`;
 
 const CHAIN = (path: string) =>
@@ -121,7 +122,8 @@ WHERE b IN relevant AND b <> x
   AND NOT (u)-[:COMPLETED]->(b)
   AND none(n IN nodes(path)[1..-1] WHERE ${met("n")})
   AND NOT EXISTS { MATCH (u)-[:COMPLETED]->(:Step)-[:WORKAROUND_FOR]->(x) }
-WITH b, path ORDER BY length(path)
+// Prefer chains made of official rules, then the shortest.
+WITH b, path ORDER BY size([r IN relationships(path) WHERE r.basis = 'practice']), length(path)
 WITH b, collect(path)[0] AS shortest
 RETURN ${STEP_FIELDS("b")}, length(shortest) AS hops, ${CHAIN("shortest")} AS chain
 ORDER BY hops, name`, params);
@@ -159,7 +161,8 @@ MATCH path = (g:Step {id: $goalId})-[:REQUIRES*1..12]->(m:Step)
 WHERE NOT (u)-[:COMPLETED]->(g)
   AND all(r IN relationships(path) WHERE ${applies("r")})
   AND none(n IN nodes(path)[1..] WHERE ${met("n")})
-WITH u, p, m, path ORDER BY length(path)
+// Prefer chains made of official rules, then the shortest.
+WITH u, p, m, path ORDER BY size([r IN relationships(path) WHERE r.basis = 'practice']), length(path)
 WITH u, p, m, collect(path)[0] AS shortest
 RETURN ${STEP_FIELDS("m")}, ${CHAIN("shortest")} AS chain,
   NOT EXISTS {
@@ -179,6 +182,8 @@ export type Circle = {
   allOfficial: boolean;
   /** True when at least one station is relevant to the user and not done. */
   affectsYou: boolean;
+  /** True when the user already completed one of the ways out. */
+  escaped: boolean;
   wayOuts: (StepSummary & { how: string; done: boolean })[];
 };
 
@@ -189,11 +194,11 @@ export function findCircles(graph: Graph, userId: string): Answer<Circle[]> {
 MATCH loop = (s:Step)-[:REQUIRES*2..8]->(s)
 WHERE all(r IN relationships(loop) WHERE ${applies("r")})
 WITH u, relevant, loop, nodes(loop) AS ns
-RETURN [n IN ns | {id: n.id, name: n.name, nameEs: n.nameEs, verified: n.verified,
+RETURN [n IN ns | {id: n.id, name: n.name, shortName: n.shortName, nameEs: n.nameEs, verified: n.verified,
           sourceUrl: n.sourceUrl, sourceTitle: n.sourceTitle}] AS stations,
   ${CHAIN("loop")} AS links,
   any(n IN ns WHERE n IN relevant AND NOT (u)-[:COMPLETED]->(n)) AS affectsYou,
-  [n IN ns | [(w:Step)-[wf:WORKAROUND_FOR]->(n) | {id: w.id, name: w.name, nameEs: w.nameEs,
+  [n IN ns | [(w:Step)-[wf:WORKAROUND_FOR]->(n) | {id: w.id, name: w.name, shortName: w.shortName, nameEs: w.nameEs,
      verified: w.verified, sourceUrl: wf.sourceUrl, sourceTitle: wf.sourceTitle, how: wf.how,
      done: EXISTS { MATCH (u)-[:COMPLETED]->(w) }}]] AS ways`, params);
 
@@ -216,6 +221,7 @@ RETURN [n IN ns | {id: n.id, name: n.name, nameEs: n.nameEs, verified: n.verifie
       links,
       allOfficial: links.every((l) => l.basis === "official"),
       affectsYou: Boolean(row.affectsYou),
+      escaped: [...wayOuts.values()].some((w) => w.done),
       wayOuts: [...wayOuts.values()],
     });
   }
@@ -259,4 +265,46 @@ MATCH (p:Profile)
 RETURN p.id AS id, p.name AS name, p.nameEs AS nameEs, [(p)-[:GOAL]->(g:Step) | g.id] AS goals
 ORDER BY id`, {});
   return { data: rows, explain: { cypher: query, params: {}, sources: [] } };
+}
+
+// ---- Map view ---------------------------------------------------------------
+
+export type StationStatus = "done" | "open" | "blocked" | "not_needed";
+export type MapStation = StepSummary & { status: StationStatus; isGoal: boolean; isWayOut: boolean };
+export type MapLine = ChainLink & { profiles: string[] };
+export type MapView = { profile: string; stations: MapStation[]; lines: MapLine[]; wayOutLinks: { from: string; to: string }[] };
+
+/** Every step relevant to the user, its status, and the requirements between them. */
+export function mapView(graph: Graph, userId: string): Answer<MapView> {
+  const params = { userId };
+  const { rows, query } = ask(graph, `${RELEVANT}
+UNWIND relevant AS s
+WITH DISTINCT u, p, relevant, s
+WITH u, p, relevant, s,
+  EXISTS { MATCH (u)-[:COMPLETED]->(s) } AS done,
+  NOT EXISTS { MATCH (s)-[r:REQUIRES]->(req:Step) WHERE ${applies("r")} AND NOT ${met("req")} } AS ready,
+  EXISTS { MATCH (s)-[:WORKAROUND_FOR]->(t:Step) WHERE ${met("t")} } AS covered
+RETURN p.id AS profile, ${STEP_FIELDS("s")},
+  CASE WHEN done THEN 'done' WHEN covered THEN 'not_needed' WHEN ready THEN 'open' ELSE 'blocked' END AS status,
+  EXISTS { MATCH (p)-[:GOAL]->(s) } AS isGoal,
+  EXISTS { MATCH (s)-[:WORKAROUND_FOR]->() } AS isWayOut,
+  [(s)-[r:REQUIRES]->(t:Step) WHERE t IN relevant AND ${applies("r")} |
+    {from: s.id, to: t.id, basis: r.basis, why: r.why, profiles: r.profiles,
+     sourceUrl: r.sourceUrl, sourceTitle: r.sourceTitle}] AS out,
+  [(s)-[:WORKAROUND_FOR]->(t:Step) WHERE t IN relevant | {from: s.id, to: t.id}] AS ways
+ORDER BY s.id`, params);
+  const stations = rows.map((r) => {
+    const s = { ...r };
+    delete s.out;
+    delete s.ways;
+    delete s.profile;
+    return s as unknown as MapStation;
+  });
+  const lines = rows.flatMap((r) => r.out as MapLine[]);
+  const wayOutLinks = rows.flatMap((r) => r.ways as { from: string; to: string }[]);
+  const profile = String(rows[0]?.profile ?? "");
+  return {
+    data: { profile, stations, lines, wayOutLinks },
+    explain: { cypher: query, params, sources: collectSources([...stations, ...lines]) },
+  };
 }
