@@ -1,0 +1,63 @@
+{
+  "_comment": "Every official page the data relies on. checked = date we read it. Steps and requirements point here by key.",
+  "interior_eu_residence": {
+    "url": "https://www.interior.gob.es/opencms/es/servicios-al-ciudadano/tramites-y-gestiones/extranjeria/ciudadanos-de-la-union-europea/estancia-y-residencia/",
+    "title": "Ministerio del Interior – Ciudadanos de la UE: Estancia y residencia",
+    "checked": "2026-11-27"
+  },
+  "policia_ex18": {
+    "url": "https://sede.policia.gob.es/portalCiudadano/_es/tramites_extranjeria_tramite_certificadoregistro_ciudadanoue.php",
+    "title": "Policía Nacional – Certificado de Registro de Ciudadano de la Unión Europea",
+    "checked": "2026-11-27"
+  },
+  "migraciones_hoja65": {
+    "url": "https://inclusion.gob.es/web/migraciones/w/65.-certificado-de-registro-de-ciudadano-de-la-union-europea",
+    "title": "Migraciones – Hoja 65 (points to the Policía Nacional page above)",
+    "checked": "2026-11-27"
+  },
+  "policia_ex15": {
+    "url": "https://sede.policia.gob.es/portalCiudadano/_es/tramites_extranjeria_tramite_asignacion_nie.php",
+    "title": "Policía Nacional – Asignación de NIE a instancia de interesado",
+    "checked": "2026-11-27"
+  },
+  "cita_extranjeria": {
+    "url": "https://mptmd.sede.gob.es/pagina?id=Extranjeria-cita-previa-extranjeria",
+    "title": "Sede MPTMD – Cita previa de extranjería",
+    "checked": "2026-11-27"
+  },
+  "malaga_padron": {
+    "url": "https://sede.malaga.eu/sta/CarpetaPublic/doEvent?APP_CODE=STA&PAGE_CODE=CATALOGO&DETALLE=6269000058790046999500",
+    "title": "Ayuntamiento de Málaga – Padrón de habitantes. Empadronamiento y cambios de domicilio",
+    "checked": "2026-11-27"
+  },
+  "aeat_nif": {
+    "url": "https://sede.agenciatributaria.gob.es/Sede/censos-nif-domicilio-fiscal/solicitar-nif/nif-persona-fisica.html",
+    "title": "Agencia Tributaria – NIF Persona física",
+    "checked": "2026-11-27"
+  },
+  "aeat_036": {
+    "url": "https://sede.agenciatributaria.gob.es/Sede/censos-nif-domicilio-fiscal/tramites-censales-relacionados-empresarios-profesionales-retenedores.html",
+    "title": "Agencia Tributaria – Trámites censales (Modelo 036)",
+    "checked": "2026-11-27"
+  },
+  "aeat_036_faq": {
+    "url": "https://sede.agenciatributaria.gob.es/Sede/censos-nif-domicilio-fiscal/tramites-censales-relacionados-empresarios-profesionales-retenedores/preguntas-frecuentes-modelos-036-037.html",
+    "title": "Agencia Tributaria – Preguntas frecuentes Modelo 036",
+    "checked": "2026-11-27"
+  },
+  "ss_nuss": {
+    "url": "https://portal.seg-social.gob.es/wps/portal/importass/importass/Categorias/Altas%2C+bajas+y+modificaciones/Altas+y+afiliacion+de+trabajadores/Solicitar+el+numero+de+la+Seguridad+Social",
+    "title": "Seguridad Social (Import@ss) – Solicitar el Número de la Seguridad Social",
+    "checked": "2026-11-27"
+  },
+  "ss_reta": {
+    "url": "https://portal.seg-social.gob.es/wps/portal/importass/importass/Categorias/Altas%2C+bajas+y+modificaciones/Altas+y+afiliacion+de+trabajadores/Alta_trabajo_autonomo",
+    "title": "Seguridad Social (Import@ss) – Alta en trabajo autónomo",
+    "checked": "2026-11-27"
+  },
+  "ss_autonomo": {
+    "url": "https://portal.seg-social.gob.es/wps/portal/importass/importass/Colectivos/Trabajo+Autonomo",
+    "title": "Seguridad Social (Import@ss) – Trabajo autónomo",
+    "checked": "2026-11-27"
+  }
+}

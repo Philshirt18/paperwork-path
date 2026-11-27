@@ -1,0 +1,8 @@
+{
+  "_comment": "Fictional demo user. No real person.",
+  "id": "lena",
+  "name": "Lena",
+  "tagline": "Freelance designer from Berlin",
+  "profile": "autonomo",
+  "completed": ["id_document", "cita_extranjeria"]
+}

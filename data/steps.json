@@ -1,0 +1,173 @@
+[
+  {
+    "id": "id_document",
+    "name": "Valid passport or national ID card",
+    "nameEs": "Pasaporte o documento nacional de identidad",
+    "office": "Your home country",
+    "whatToBring": ["A passport or national ID card that is valid and in force"],
+    "source": "policia_ex18",
+    "verified": true
+  },
+  {
+    "id": "job_offer",
+    "name": "Employer's hiring declaration or employment certificate",
+    "nameEs": "Declaración de contratación o certificado de empleo",
+    "office": "Your employer",
+    "whatToBring": [
+      "A hiring declaration from the employer or an employment certificate",
+      "Also accepted: the employment contract registered with the public employment service, or your Social Security registration"
+    ],
+    "source": "interior_eu_residence",
+    "verified": true
+  },
+  {
+    "id": "health_insurance",
+    "name": "Health insurance that covers you in Spain",
+    "nameEs": "Seguro de enfermedad",
+    "office": "An insurer, or your pension country",
+    "whatToBring": [
+      "Public or private health insurance, taken out in Spain or abroad, with cover in Spain equivalent to the national health system",
+      "Pensioners: a certificate showing the right to health care paid by the country that pays the pension"
+    ],
+    "source": "interior_eu_residence",
+    "verified": true
+  },
+  {
+    "id": "proof_of_funds",
+    "name": "Proof of sufficient resources",
+    "nameEs": "Acreditación de recursos suficientes",
+    "office": "Your bank or asset records",
+    "whatToBring": [
+      "Any legally accepted proof, for example property titles, certified cheques, proof of capital income, or credit cards with an up-to-date bank certificate of the available credit",
+      "Assessed individually, taking your personal and family situation into account"
+    ],
+    "source": "interior_eu_residence",
+    "verified": true
+  },
+  {
+    "id": "cita_extranjeria",
+    "name": "Appointment at the foreigners' office",
+    "nameEs": "Cita previa de extranjería",
+    "office": "Online booking (Cita previa de extranjería)",
+    "whatToBring": ["The appointment must be requested by the foreign citizen or an authorised representative"],
+    "source": "cita_extranjeria",
+    "verified": false,
+    "unverifiedReason": "The booking app (icp.administracionelectronica.gob.es) could not be read, so it is not confirmed which procedure to pick for Málaga or whether the appointment is mandatory."
+  },
+  {
+    "id": "nie_number",
+    "name": "NIE number on its own (form EX-15)",
+    "nameEs": "Asignación de NIE (EX-15)",
+    "office": "Oficina de Extranjería or Comisaría de Policía; from abroad: a Spanish consulate",
+    "whatToBring": [
+      "Form EX-15",
+      "Proof of payment of fee Modelo 790 Código 012",
+      "The reasons why you need the number"
+    ],
+    "source": "policia_ex15",
+    "verified": true
+  },
+  {
+    "id": "eu_certificate",
+    "name": "EU citizen registration certificate (includes your NIE)",
+    "nameEs": "Certificado de registro de ciudadano de la Unión",
+    "office": "Oficina de Extranjería of the province, or else the Comisaría de Policía",
+    "whatToBring": [
+      "Form EX-18",
+      "Proof of payment of fee Modelo 790 Código 012",
+      "Valid passport or national ID card",
+      "The documents for your situation (worker, self-employed, or own means), original and copy",
+      "Apply in person within three months of entering Spain; the certificate is issued immediately"
+    ],
+    "source": "policia_ex18",
+    "verified": true
+  },
+  {
+    "id": "housing",
+    "name": "Proof of where you live (e.g. rental contract)",
+    "nameEs": "Acreditación del domicilio",
+    "office": "Your landlord, owner or utility company",
+    "whatToBring": [
+      "One of: title deed (escritura, nota del registro, IBI receipt); a utility contract (electricity, water or gas) with a recent bill if not current; a current rental contract with the last rent receipt",
+      "With a private rental contract: a photocopy of the landlord's ID",
+      "Or: authorisation from a person already registered there, with their proof of ownership or rental and a copy of their ID"
+    ],
+    "source": "malaga_padron",
+    "verified": true
+  },
+  {
+    "id": "padron",
+    "name": "Register at the town hall (padrón)",
+    "nameEs": "Empadronamiento",
+    "office": "Edificio de Tabacalera or a Junta Municipal de Distrito, Málaga",
+    "whatToBring": [
+      "Hoja padronal, filled in and signed",
+      "EU citizens: passport or ID document from your country, with the EU registration certificate (NIE) if you have one",
+      "Proof of where you live",
+      "No fee"
+    ],
+    "source": "malaga_padron",
+    "verified": true
+  },
+  {
+    "id": "alta_censal",
+    "name": "Register with the tax office as self-employed (modelo 036)",
+    "nameEs": "Alta censal (modelo 036)",
+    "office": "Agencia Tributaria, online (certificate or Cl@ve) or at the office for your tax address",
+    "whatToBring": [
+      "Modelo 036",
+      "Your NIF, which for foreigners is normally your NIE",
+      "File before starting the activity"
+    ],
+    "source": "aeat_036",
+    "verified": true
+  },
+  {
+    "id": "nuss",
+    "name": "Social Security number",
+    "nameEs": "Número de la Seguridad Social (NUSS)",
+    "office": "Seguridad Social, online (Import@ss)",
+    "whatToBring": [
+      "Your identity data (DNI or NIE)",
+      "Mobile phone, email and usual address",
+      "Without electronic ID: a selfie and a photo of your document"
+    ],
+    "source": "ss_nuss",
+    "verified": true
+  },
+  {
+    "id": "bank_account",
+    "name": "Spanish bank account",
+    "nameEs": "Cuenta bancaria",
+    "office": "A bank of your choice",
+    "whatToBring": [],
+    "source": null,
+    "verified": false,
+    "unverifiedReason": "Banks are private; no official source says what they require. Included because the RETA registration asks for a bank account for direct debit."
+  },
+  {
+    "id": "reta",
+    "name": "Register as self-employed with Social Security (RETA)",
+    "nameEs": "Alta en trabajo autónomo (RETA)",
+    "office": "Seguridad Social, online (Import@ss)",
+    "whatToBring": [
+      "Your IAE and CNAE activity codes",
+      "Start date and address of the activity",
+      "Estimated yearly net income, contribution base, mutua",
+      "A bank account for direct debit",
+      "Apply before you start (up to 60 days ahead)"
+    ],
+    "source": "ss_reta",
+    "verified": true
+  },
+  {
+    "id": "alta_employee",
+    "name": "Your employer registers you with Social Security",
+    "nameEs": "Alta en la Seguridad Social por la empresa",
+    "office": "Your employer",
+    "whatToBring": ["Your Social Security number"],
+    "source": "ss_nuss",
+    "verified": false,
+    "unverifiedReason": "The employer-side Seguridad Social page was not read. The NUSS page only says you need the number to be registered for the first time when you start working."
+  }
+]

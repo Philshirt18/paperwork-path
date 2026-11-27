@@ -1,0 +1,5 @@
+[
+  { "id": "employee", "name": "Employee", "nameEs": "Trabajador por cuenta ajena", "goals": ["eu_certificate", "padron", "alta_employee"] },
+  { "id": "autonomo", "name": "Self-employed", "nameEs": "Autónomo", "goals": ["eu_certificate", "padron", "reta"] },
+  { "id": "own_means", "name": "Retired / own funds", "nameEs": "Recursos propios", "goals": ["eu_certificate", "padron"] }
+]

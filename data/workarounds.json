@@ -1,0 +1,8 @@
+[
+  {
+    "step": "nie_number",
+    "for": "eu_certificate",
+    "source": "policia_ex15",
+    "how": "Most steps only need your NIE number, not the certificate. You can ask for the number on its own with form EX-15 (stating your reasons), also from abroad through a Spanish consulate."
+  }
+]

@@ -1,0 +1,45 @@
+[
+  { "from": "eu_certificate", "to": "id_document", "profiles": [], "basis": "official", "source": "policia_ex18",
+    "why": "Valid passport or national ID card is required." },
+  { "from": "eu_certificate", "to": "cita_extranjeria", "profiles": [], "basis": "official", "source": "cita_extranjeria",
+    "why": "Applications at foreigners' offices are made with an appointment (whether it is mandatory is not stated)." },
+  { "from": "eu_certificate", "to": "job_offer", "profiles": ["employee"], "basis": "official", "source": "interior_eu_residence",
+    "why": "Workers must bring a hiring declaration or employment certificate." },
+  { "from": "eu_certificate", "to": "alta_censal", "profiles": ["autonomo"], "basis": "official", "source": "interior_eu_residence",
+    "why": "Self-employed must prove it, e.g. with registration in the tax census (Censo de Actividades Económicas). Also accepted: Registro Mercantil or Social Security registration." },
+  { "from": "eu_certificate", "to": "health_insurance", "profiles": ["own_means"], "basis": "official", "source": "interior_eu_residence",
+    "why": "People not working in Spain need health insurance with cover in Spain." },
+  { "from": "eu_certificate", "to": "proof_of_funds", "profiles": ["own_means"], "basis": "official", "source": "interior_eu_residence",
+    "why": "People not working in Spain need sufficient resources." },
+  { "from": "eu_certificate", "to": "padron", "profiles": [], "basis": "practice", "source": null,
+    "why": "Often asked for at appointments. Not in the official document list." },
+
+  { "from": "padron", "to": "id_document", "profiles": [], "basis": "official", "source": "malaga_padron",
+    "why": "EU citizens show their passport or national ID." },
+  { "from": "padron", "to": "housing", "profiles": [], "basis": "official", "source": "malaga_padron",
+    "why": "You must prove where you live." },
+
+  { "from": "housing", "to": "eu_certificate", "profiles": [], "basis": "practice", "source": null,
+    "why": "Landlords and utility companies often ask for an NIE. Not an official rule." },
+
+  { "from": "alta_censal", "to": "eu_certificate", "profiles": ["autonomo"], "basis": "official", "source": "aeat_nif",
+    "why": "You need a NIF, which for foreigners in general is the NIE." },
+
+  { "from": "nuss", "to": "eu_certificate", "profiles": [], "basis": "official", "source": "ss_nuss",
+    "why": "The application asks for your identity data: DNI or NIE." },
+
+  { "from": "bank_account", "to": "eu_certificate", "profiles": [], "basis": "practice", "source": null,
+    "why": "Banks commonly ask for an NIE. Not an official rule." },
+
+  { "from": "reta", "to": "nuss", "profiles": ["autonomo"], "basis": "official", "source": "ss_nuss",
+    "why": "The Social Security number is needed to be registered for the first time." },
+  { "from": "reta", "to": "alta_censal", "profiles": ["autonomo"], "basis": "official", "source": "ss_autonomo",
+    "why": "You must be registered with the tax office (IAE) as well; RETA asks for your IAE code. The official order is not stated." },
+  { "from": "reta", "to": "bank_account", "profiles": ["autonomo"], "basis": "official", "source": "ss_reta",
+    "why": "RETA asks for a bank account for direct debit." },
+
+  { "from": "alta_employee", "to": "nuss", "profiles": ["employee"], "basis": "official", "source": "ss_nuss",
+    "why": "The Social Security number is needed to be registered for the first time." },
+  { "from": "alta_employee", "to": "job_offer", "profiles": ["employee"], "basis": "official", "source": null,
+    "why": "You need a job before the employer can register you. Self-evident; no page read." }
+]
